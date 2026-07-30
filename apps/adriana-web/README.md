@@ -38,6 +38,18 @@ La agenda solo acepta reservas cuando existe persistencia D1. En Vercel se
 muestra un estado de activación y no se recopilan datos personales hasta
 conectar una base de datos persistente compatible.
 
+## SEO de producción
+
+- Dominio canónico: `https://www.dradrianavarela.com`.
+- El dominio raíz redirige permanentemente a `www`.
+- `app/robots.ts` y `app/sitemap.ts` controlan rastreo e indexación.
+- `app/lib/seo.ts` centraliza metadatos, palabras clave, Open Graph, X Cards y
+  datos estructurados.
+- La portada social oficial está en
+  `public/images/portada-seo-dra-adriana-varela.png`.
+- `/agendar` conserva `noindex` mientras la persistencia de reservas permanezca
+  sin configurar.
+
 ## Estructura inicial
 
 - `app/`: rutas, layouts y componentes del sitio.

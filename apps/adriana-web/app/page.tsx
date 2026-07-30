@@ -4,12 +4,20 @@ import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
 import { doctorProfile } from "./content/doctor";
 import { medicalApproaches } from "./content/services";
+import { createPageMetadata, SITE_DESCRIPTION } from "./lib/seo";
 
-export const metadata: Metadata = {
-  title: "Envejecimiento saludable y medicina integral",
-  description:
-    "Conoce el enfoque de la Dra. Adriana Varela en medicina regenerativa, funcional y estética, y cómo funciona una valoración personalizada.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Medicina integral en Pereira",
+  absoluteTitle: "Dra. Adriana Varela | Medicina integral en Pereira",
+  description: SITE_DESCRIPTION,
+  path: "/",
+  keywords: [
+    "Dra. Adriana Varela Pereira",
+    "medicina integral en Pereira",
+    "envejecer con salud",
+    "medicina y naturalidad",
+  ],
+});
 
 const needs = [
   {

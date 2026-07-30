@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { JsonLd } from "./components/JsonLd";
 import { PageEffects } from "./components/PageEffects";
+import {
+  BASE_KEYWORDS,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_IMAGE_ALT,
+  SOCIAL_IMAGE_PATH,
+  siteJsonLd,
+} from "./lib/seo";
 import "./globals.css";
 
 const geist = Geist({
@@ -9,38 +19,59 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dradrianavarela.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Dra. Adriana Varela",
+    default: "Dra. Adriana Varela | Medicina integral en Pereira",
     template: "%s | Dra. Adriana Varela",
   },
-  description:
-    "Medicina regenerativa, funcional y estética con una mirada integral, natural y personalizada.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: BASE_KEYWORDS,
+  authors: [
+    {
+      name: SITE_NAME,
+      url: `${SITE_URL}/sobre-mi`,
+    },
+  ],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "salud",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "es_CO",
-    title: "Dra. Adriana Varela",
-    description:
-      "Envejecer es natural. Hacerlo con salud y consciencia es una decisión.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "Dra. Adriana Varela | Medicina integral en Pereira",
+    description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/og.png",
-        width: 1734,
-        height: 907,
-        alt: "Dra. Adriana Varela — Envejecer con salud y consciencia",
+        url: SOCIAL_IMAGE_PATH,
+        width: 1731,
+        height: 909,
+        alt: SOCIAL_IMAGE_ALT,
+        type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dra. Adriana Varela",
-    description:
-      "Envejecer es natural. Hacerlo con salud y consciencia es una decisión.",
-    images: ["/og.png"],
+    title: "Dra. Adriana Varela | Medicina integral en Pereira",
+    description: SITE_DESCRIPTION,
+    images: [SOCIAL_IMAGE_PATH],
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -50,8 +81,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es-CO">
       <body className={geist.variable}>
+        <JsonLd data={siteJsonLd} />
         <PageEffects />
         {children}
       </body>

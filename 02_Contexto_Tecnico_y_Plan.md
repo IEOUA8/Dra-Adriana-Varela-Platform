@@ -45,7 +45,7 @@ No se crean todavía aplicaciones o paquetes vacíos que no tengan una necesidad
 - [x] Estado protegido para tratamientos todavía no aprobados.
 - [x] Recursos previstos, preguntas frecuentes, CTA final y footer.
 - [x] Metadata base, no indexación durante desarrollo e imagen social.
-- [ ] Sitemap, `robots.txt` de producción y datos estructurados.
+- [x] Sitemap, `robots.txt` de producción y datos estructurados.
 - [ ] Capa centralizada de eventos, inicialmente desacoplada de proveedores.
 - [ ] Sustituir monogramas por logo y fotografía oficiales.
 - [ ] Revisión médica, de marca y legal del contenido provisional.

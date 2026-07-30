@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { JsonLd } from "../components/JsonLd";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import type { MedicalApproach } from "../content/services";
+import { createApproachJsonLd } from "../lib/seo";
 
 type PhilosophyPillar = {
   tagline: string;
@@ -15,8 +17,16 @@ export function ApproachDetail({
   approach: MedicalApproach;
   philosophy: PhilosophyPillar;
 }) {
+  const description = `Conoce el enfoque de ${approach.title.toLowerCase()} de la Dra. Adriana Varela y los servicios informados, sujetos a valoración médica individual en Pereira.`;
+
   return (
     <>
+      <JsonLd
+        data={createApproachJsonLd({
+          approach,
+          description,
+        })}
+      />
       <SiteHeader />
       <main id="contenido">
         <section className={`approach-page-hero approach-page-${approach.number}`}>

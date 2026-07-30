@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
+import { createPageMetadata } from "../lib/seo";
 import { BookingScheduler } from "./BookingScheduler";
 
-export const metadata: Metadata = {
-  title: "Agendar valoración",
+export const metadata: Metadata = createPageMetadata({
+  title: "Agenda de valoración médica",
   description:
-    "Selecciona el tipo de valoración, consulta horarios disponibles y registra tu cita con la Dra. Adriana Varela.",
-};
+    "Consulta el estado de la agenda de valoración médica de la Dra. Adriana Varela en Pereira. Las reservas online se encuentran en activación.",
+  path: "/agendar",
+  keywords: [
+    "agenda Dra. Adriana Varela",
+    "valoración médica Pereira",
+    "consulta médica Pereira",
+  ],
+  index: false,
+});
 
 export default function BookingPage() {
   return (
@@ -40,4 +48,3 @@ export default function BookingPage() {
     </>
   );
 }
-

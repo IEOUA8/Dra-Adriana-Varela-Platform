@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "../components/JsonLd";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { doctorProfile } from "../content/doctor";
+import { createPageMetadata, profilePageJsonLd } from "../lib/seo";
 
-export const metadata: Metadata = {
-  title: "Sobre mí",
+export const metadata: Metadata = createPageMetadata({
+  title: "Formación y trayectoria",
   description:
-    "Conoce la formación, trayectoria profesional y rol de la Dra. Adriana Varela Nariño en Canorá Medical.",
-};
+    "Conoce la formación, trayectoria, filosofía médica y rol de la Dra. Adriana Varela Nariño, médica cirujana y CEO de Canorá Medical en Pereira.",
+  path: "/sobre-mi",
+  keywords: [
+    "formación Dra. Adriana Varela",
+    "trayectoria médica Adriana Varela",
+    "médica cirujana Pereira",
+    "CEO Canorá Medical",
+  ],
+});
 
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={profilePageJsonLd} />
       <SiteHeader />
       <main id="contenido">
         <section className="profile-hero">
