@@ -87,6 +87,7 @@ export function BookingScheduler() {
   const [integration, setIntegration] = useState<"preview" | "google_calendar">(
     "preview",
   );
+  const [bookingEnabled, setBookingEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -111,6 +112,7 @@ export function BookingScheduler() {
         const payload = (await response.json()) as {
           days?: AvailabilityDay[];
           integration?: "preview" | "google_calendar";
+          bookingEnabled?: boolean;
           error?: string;
         };
         if (!response.ok) {
@@ -122,6 +124,7 @@ export function BookingScheduler() {
         const availableDays = payload.days ?? [];
         setDays(availableDays);
         setIntegration(payload.integration ?? "preview");
+        setBookingEnabled(payload.bookingEnabled ?? true);
         if (availableDays[0]) {
           setSelectedDate(availableDays[0].date);
           const firstDate = toDate(availableDays[0].date);
@@ -270,6 +273,25 @@ export function BookingScheduler() {
             <p>Google Calendar envió la invitación y los datos de la reserva.</p>
           </div>
         )}
+        <Link className="button" href="/">
+          Volver al inicio <span aria-hidden="true">→</span>
+        </Link>
+      </section>
+    );
+  }
+
+  if (!loading && !bookingEnabled) {
+    return (
+      <section className="booking-confirmation" aria-live="polite">
+        <div className="confirmation-mark" aria-hidden="true">
+          ·
+        </div>
+        <p className="eyebrow">Agenda en activación</p>
+        <h2>Las reservas online estarán disponibles próximamente.</h2>
+        <p>
+          Estamos terminando la conexión segura de la agenda. Esta página no
+          solicitará ni almacenará tus datos hasta que el sistema esté listo.
+        </p>
         <Link className="button" href="/">
           Volver al inicio <span aria-hidden="true">→</span>
         </Link>

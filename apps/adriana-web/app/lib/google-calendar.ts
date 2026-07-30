@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { BOOKING_TIMEZONE } from "./booking-config";
 
 type GoogleCalendarEnvironment = {
@@ -20,7 +19,12 @@ type CalendarBooking = {
 };
 
 function getCalendarEnvironment() {
-  return env as unknown as GoogleCalendarEnvironment;
+  return {
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN,
+    GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
+  } satisfies GoogleCalendarEnvironment;
 }
 
 export function isGoogleCalendarConfigured() {
@@ -161,4 +165,3 @@ export async function createGoogleCalendarEvent(booking: CalendarBooking) {
 
   return (await response.json()) as { id: string; htmlLink?: string };
 }
-

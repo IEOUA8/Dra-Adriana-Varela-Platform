@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-
 export type StoredAppointment = {
   id: string;
   reference: string;
@@ -26,6 +24,21 @@ type BookingRecord = {
   patientPhone: string;
   managementTokenHash: string;
   calendarSyncStatus: string;
+};
+
+type D1Result<T> = {
+  results: T[];
+};
+
+type D1PreparedStatement = {
+  bind(...values: unknown[]): D1PreparedStatement;
+  all<T>(): Promise<D1Result<T>>;
+  run(): Promise<unknown>;
+};
+
+type D1Database = {
+  batch(statements: D1PreparedStatement[]): Promise<unknown>;
+  prepare(query: string): D1PreparedStatement;
 };
 
 const createAppointmentsTable = `
@@ -58,15 +71,44 @@ const createSlotStartIndex = `
   ON appointments (slot_start, status)
 `;
 
-function getD1() {
-  if (!env.DB) {
-    throw new Error("La agenda no tiene disponible su base de datos.");
+let databasePromise: Promise<D1Database | null> | null = null;
+
+async function loadD1() {
+  if (process.env.VERCEL) {
+    return null;
   }
-  return env.DB;
+
+  try {
+    // The specifier remains dynamic so Next.js/Vercel does not bundle a
+    // Cloudflare-only runtime module. Vinext resolves it inside Workers.
+    const cloudflareWorkersModule = "cloudflare:workers";
+    const runtime = (await import(
+      /* @vite-ignore */ cloudflareWorkersModule
+    )) as {
+      env?: { DB?: D1Database };
+    };
+    return runtime.env?.DB ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function getD1() {
+  databasePromise ??= loadD1();
+  return databasePromise;
+}
+
+export async function isBookingPersistenceConfigured() {
+  return Boolean(await getD1());
 }
 
 export async function ensureBookingSchema() {
-  const db = getD1();
+  const db = await getD1();
+  if (!db) {
+    throw new Error(
+      "La agenda online está en activación. Aún no es posible registrar reservas.",
+    );
+  }
   await db.batch([
     db.prepare(createAppointmentsTable),
     db.prepare(createSlotStartIndex),
@@ -150,4 +192,3 @@ export async function releaseAppointment(appointmentId: string) {
     .bind(appointmentId)
     .run();
 }
-

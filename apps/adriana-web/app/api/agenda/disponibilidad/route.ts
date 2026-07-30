@@ -5,7 +5,10 @@ import {
   BOOKING_WINDOW_DAYS,
   findBookingService,
 } from "../../../lib/booking-config";
-import { getReservedSlots } from "../../../lib/booking-db";
+import {
+  getReservedSlots,
+  isBookingPersistenceConfigured,
+} from "../../../lib/booking-db";
 import {
   addDays,
   buildGenericSlotsForDate,
@@ -27,6 +30,19 @@ export async function GET(request: Request) {
 
     if (!service) {
       return Response.json({ error: "El tipo de cita no es válido." }, { status: 400 });
+    }
+
+    const bookingEnabled = await isBookingPersistenceConfigured();
+    if (!bookingEnabled) {
+      return Response.json({
+        service,
+        services: BOOKING_SERVICES,
+        days: [],
+        timezone: BOOKING_TIMEZONE,
+        integration: "preview",
+        bookingEnabled: false,
+        provisional: true,
+      });
     }
 
     const todayKey = getBogotaToday();
@@ -62,6 +78,7 @@ export async function GET(request: Request) {
       days,
       timezone: BOOKING_TIMEZONE,
       integration: isGoogleCalendarConfigured() ? "google_calendar" : "preview",
+      bookingEnabled: true,
       provisional: true,
     });
   } catch (error) {

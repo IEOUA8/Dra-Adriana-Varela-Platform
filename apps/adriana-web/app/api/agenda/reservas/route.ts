@@ -9,6 +9,7 @@ import {
   getReservedSlots,
   attachCalendarEvent,
   releaseAppointment,
+  isBookingPersistenceConfigured,
 } from "../../../lib/booking-db";
 import {
   buildGenericSlotsForDate,
@@ -60,6 +61,16 @@ export async function POST(request: Request) {
   let appointmentId: string | null = null;
 
   try {
+    if (!(await isBookingPersistenceConfigured())) {
+      return Response.json(
+        {
+          error:
+            "La agenda online está en activación. Aún no es posible registrar reservas.",
+        },
+        { status: 503 },
+      );
+    }
+
     const payload = (await request.json()) as BookingPayload;
     if (payload.website) {
       return Response.json({ ok: true }, { status: 201 });
