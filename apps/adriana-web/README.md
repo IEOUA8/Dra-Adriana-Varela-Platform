@@ -21,8 +21,22 @@ El servidor local usa `http://localhost:3000`.
 
 ```bash
 npm run build
+npm run build:vercel
 npm run lint
 ```
+
+## Despliegue
+
+El repositorio mantiene dos destinos compatibles:
+
+- OpenAI Sites utiliza Vinext, Cloudflare Workers y el binding D1 definido en
+  `.openai/hosting.json`.
+- Vercel utiliza Next.js, Node.js 24 y `npm run build:vercel`, con
+  `apps/adriana-web` como directorio raíz del proyecto.
+
+La agenda solo acepta reservas cuando existe persistencia D1. En Vercel se
+muestra un estado de activación y no se recopilan datos personales hasta
+conectar una base de datos persistente compatible.
 
 ## Estructura inicial
 
