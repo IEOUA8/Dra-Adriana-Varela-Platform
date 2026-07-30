@@ -47,6 +47,10 @@ test("renderiza la home de la Dra. Adriana Varela", async () => {
     /portada-seo-dra-adriana-varela\.png/i,
   );
   assert.match(html, /<meta name="robots" content="index, follow"/i);
+  assert.match(
+    html,
+    /<meta name="google-site-verification" content="TyMWOVZKCLg49r5LP6z3mzORXm9UsmEwjAkWhkoqxvI"/i,
+  );
   assert.match(html, /"@type":"Physician"/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });

@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   category: "salud",
+  verification: {
+    google: "TyMWOVZKCLg49r5LP6z3mzORXm9UsmEwjAkWhkoqxvI",
+  },
   alternates: {
     canonical: "/",
   },
